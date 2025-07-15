@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>RAGCode Assistant</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+      <div class="logo">
+        <span class="icon fa-code"></span>
+      </div>
+      <div class="content">
+        <div class="inner">
+          <h1>Chat With Your Code</h1>
+          <p>Interact with your C/C++ codebase using natural language via Retrieval-Augmented Generation (RAG)</p>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#intro">Overview</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#auth">Login</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+      <!-- Intro -->
+      <article id="intro">
+        <h2 class="major">Project Overview</h2>
+        <span class="image main"><img src="{{ url_for('static', filename='images/intro.png') }}" alt="Chat with Code" /></span>
+        <p>Chat With Your Code allows developers to chat with their C/C++ codebase using natural language. It leverages advanced retrieval and generation techniques to answer questions about functions, variables, memory logic, and more.</p>
+        <p>This tool enhances productivity, simplifies onboarding, and supports faster debugging and documentation by combining code chunking, semantic search, and LLM-based responses.</p>
+      </article>
+
+      <!-- Features -->
+      <article id="features">
+        <h2 class="major">Core Features</h2>
+        <span class="image main"><img src="{{ url_for('static', filename='images/features.png') }}" alt="Features" /></span>
+        <ul>
+          <li>🔍 Semantic search on code using vector embeddings (CodeBERT, OpenAI, etc.)</li>
+          <li>🧠 LLM-based answer generation using GrokAI</li>
+          <li>📄 Source linking to exact code lines and documentation</li>
+          <li>📊 Performance evaluation on response latency, hallucination rate</li>
+          <li>💬 Query log, function reference list, and more via custom UI</li>
+        </ul>
+      </article>
+
+      <!-- About -->
+      <article id="about">
+        <h2 class="major">About the Project</h2>
+        <span class="image main"><img src="{{ url_for('static', filename='images/about.png') }}" alt="About" /></span>
+        <p>We are a passionate team of developers and innovators on a mission to redefine how code is understood and debugged. With our "Chat With Your Code" assistant, we’ve combined cutting‐edge AI—with capabilities like Retrieval-Augmented Generation, NLP pipelines, and vector search—to break down the complexity of C/C++ codebases.</p>
+        <p>Our motive is simple: empower developers by making code more accessible, understandable, and interactive. We believe that by harnessing advanced language models, we can turn even the most daunting code into a comprehensible dialogue, paving the way for faster onboarding, streamlined debugging, and continuous innovation.</p>
+      </article>
+
+      <!-- Auth -->
+      <article id="auth">
+        <h2 class="major" id="form-title">Login</h2>
+
+        <!-- Error Message -->
+        {% if error %}
+          <p style="color: red; text-align: center;">{{ error }}</p>
+        {% endif %}
+        <!-- Login Form -->
+        <form id="login-form" method="post" action="/login">
+          <div class="fields">
+            <div class="field">
+              <label for="login-email">Email</label>
+              <input type="email" name="login-email" id="login-email" required />
+            </div>
+            <div class="field">
+              <label for="login-password">Password</label>
+              <input type="password" name="login-password" id="login-password" required />
+            </div>
+          </div>
+          <ul class="actions">
+            <li><input type="submit" value="Login" class="primary" /></li>
+          </ul>
+          <p>New here? <a href="#" onclick="toggleForm('signup'); return false;">Sign up</a></p>
+        </form>
+
+        <!-- Signup Form (hidden initially) -->
+        <form id="signup-form" method="post" action="/signup" style="display: none;">
+          <div class="fields">
+            <div class="field half">
+              <label for="signup-name">Name</label>
+              <input type="text" name="signup-name" id="signup-name" required />
+            </div>
+            <div class="field half">
+              <label for="signup-email">Email</label>
+              <input type="email" name="signup-email" id="signup-email" required />
+            </div>
+            <div class="field">
+              <label for="signup-password">Password</label>
+              <input type="password" name="signup-password" id="signup-password" required />
+            </div>
+          </div>
+          <ul class="actions">
+            <li><input type="submit" value="Sign Up" class="primary" /></li>
+            <li><input type="reset" value="Clear" /></li>
+          </ul>
+          <p>Already have an account? <a href="#" onclick="toggleForm('login'); return false;">Login here</a></p>
+        </form>
+      </article>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <p class="copyright">
+        &copy; Chat With Your Code</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- BG -->
+  <div id="bg"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Toggle Login/Signup -->
+  <script>
+    function toggleForm(type) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const formTitle = document.getElementById('form-title');
+
+      if (type === 'signup') {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        formTitle.textContent = 'Sign Up';
+      } else {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        formTitle.textContent = 'Login';
+      }
+    }
+  </script>
+
+</body>
+</html>

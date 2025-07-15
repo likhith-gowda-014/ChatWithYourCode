@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Dashboard | RAGCode Assistant</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}" /></noscript>
+</head>
+<body class="is-preload">
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+      <div class="logo">
+        <span class="icon fa-code"></span>
+      </div>
+      <div class="content">
+        <div class="inner">
+          <h1>Welcome, {{ session['user_name'] }}</h1>
+          <p>Interact with your C/C++ codebase using natural language</p>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#chat">Chat</a></li>
+          <li><a href="#functions">Functions</a></li>
+          <li><a href="#diagram">Diagram</a></li>
+          <li><a href="#logs">Logs</a></li>
+          <li><a href="#metrics">Metrics</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+      <!-- Chat Interface -->
+      <article id="chat">
+        <h2 class="major">Chat with Your Code</h2>
+        <form method="post" action="/query">
+          <div class="fields">
+            <div class="field">
+              <label for="user-query">Ask a question</label>
+              <input type="text" name="user-query" id="user-query" placeholder="e.g., What does init_printer() do?" required />
+            </div>
+          </div>
+          <ul class="actions">
+            <li><input type="submit" value="Ask" class="primary" /></li>
+          </ul>
+        </form>
+
+        {% if answer %}
+        <section id="response">
+          <h3>Answer</h3>
+          <p>{{ answer|safe }}</p>
+        </section>
+        {% endif %}
+      </article>
+
+      <!-- Function Reference Panel -->
+      <article id="functions">
+        <h2 class="major">Function References</h2>
+        <ul>
+          {% for function in function_list %}
+            <li><a href="#chat" onclick="insertQuery('{{ function }}')">{{ function }}</a></li>
+          {% endfor %}
+        </ul>
+      </article>
+
+      <!-- Mermaid Diagram -->
+      <article id="diagram">
+        <h2 class="major">Code Structure Diagram</h2>
+        <div class="mermaid">
+          {{ mermaid_diagram|safe }}
+        </div>
+      </article>
+
+      <!-- Query Logs -->
+      <article id="logs">
+        <h2 class="major">Query Log</h2>
+        <ul>
+          {% for log in query_logs %}
+            <li><strong>{{ log.timestamp }}</strong>: {{ log.query }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+
+      <!-- Metrics -->
+      <article id="metrics">
+        <h2 class="major">Performance Metrics</h2>
+        <ul>
+          <li>Average Response Time: {{ metrics.avg_response_time }} ms</li>
+          <li>Hallucination Rate: {{ metrics.hallucination_rate }}%</li>
+          <li>Semantic Relevance Score: {{ metrics.semantic_score }}/10</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <p>&copy; Chat With Your Code</p>
+    </footer>
+
+  </div>
+
+  <!-- BG -->
+  <div id="bg"></div>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/util.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <script>
+    function insertQuery(text) {
+      document.getElementById("user-query").value = text;
+      document.getElementById("user-query").focus();
+    }
+  </script>
+
+</body>
+</html>
